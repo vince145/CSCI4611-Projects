@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+        <title>Programming Assignment 3: Surface of Revolution, Lighting and Texturing</title>
+
+        <script id="vertex-shader" type="x-shader/x-vertex">
+            uniform mat4 modelView;
+            uniform mat4 projection;
+            
+            attribute vec3 vPosition;
+            attribute vec3 vNormal;
+            attribute vec2 vTexCoord;
+            
+            varying vec3 pos;
+            varying vec3 normal;
+            
+            varying vec2 texCoord;
+            
+            void main()
+            {
+                
+               pos = (modelView * vec4(vPosition, 1.0)).xyz;
+               normal = normalize(vec3(modelView * vec4(vNormal, 0)));
+               texCoord    = vTexCoord;
+
+               gl_Position = projection * modelView * vec4(vPosition, 1.0);
+            }
+        </script>
+
+        <script id="fragment-shader" type="x-shader/x-fragment">
+            precision mediump float;
+            
+            varying vec3 pos;
+            varying vec3 normal;
+            varying vec2 texCoord;
+            
+            uniform vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
+            uniform vec4 LightPosition;
+            uniform float Shininess;
+            uniform float TextureOn;
+            
+            uniform sampler2D texMap;
+
+            void main()
+            {
+                
+                vec3 L = normalize(LightPosition.xyz - pos);
+                vec3 E = normalize(-pos);
+                vec3 H = normalize(L + E);
+                vec3 N = normalize(normal);
+                
+                vec4 ambient = AmbientProduct;
+                
+                float Kd = max( dot(L, N), 0.0 );
+                vec4 diffuse = Kd*DiffuseProduct;
+                
+                float Ks = pow( max(dot(N, H), 0.0), Shininess );
+                
+                vec4 specular = Ks * SpecularProduct;
+                if ( dot(L, N) < 0.0 ) {
+                    specular = vec4(0.0, 0.0, 0.0, 1.0);
+                }
+                
+                if (TextureOn > 0.0) {
+                    gl_FragColor = (ambient + diffuse + specular) * texture2D( texMap, texCoord );
+                } else {
+                    gl_FragColor = (ambient + diffuse + specular);
+                }
+                gl_FragColor.a = 1.0;
+            }
+        </script>
+
+        <script type="text/javascript" src="webgl-utils.js"></script>
+        <script type="text/javascript" src="initShaders.js"></script>
+        <script type="text/javascript" src="MV.js"></script>
+        <script type="text/javascript" src="program3-vince145.js"></script>
+    </head>
+
+    <body>
+        <canvas id="gl-canvas" width="512" height="400">
+            Oops ... your browser doesn't support the HTML5 canvas element
+        </canvas>
+        <div>
+            Shape:
+            <select id="shape-select">
+                <option value="profile1">Profile 1</option>
+                <option value="profile2">Profile 2</option>
+                <option value="profile3">Profile 3</option>
+                <option value="profile4">Profile 4</option>
+                <option value="profile5">Profile 5</option>
+            </select>
+        </div>
+        <div>
+            Number of angles: <input id="numAngles" type="number" value="8" min="3" max="25" step="1" />
+        </div>
+        <div>
+            Number of steps per curve: <input id="stepsPerCurve" type="number" value="6" min="2" max="10" step="1" />
+        </div>
+        <div>
+            Material:
+            <select id="material">
+                <option value="plastic" selected="selected">Yellow Plastic</option>
+                <option value="brass">Brass Metal</option>
+                <option value="texture">Texture Map</option>
+            </select>
+        </div>
+        <div>
+            Texture:
+            <select id="textureType">
+                <option value="tile" selected="selected">Tile</option>
+                <option value="wood">Wood</option>
+            </select>
+            <img id="tile-img" src="http://i.imgur.com/23TQCyu.png" crossorigin="anonymous" hidden="hidden" />
+            <img id="wood-img" src="http://i.imgur.com/F2g6RQZ.png" crossorigin="anonymous" hidden="hidden" />
+        </div>
+    </body>
+</html>
