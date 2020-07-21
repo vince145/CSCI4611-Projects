@@ -6,7 +6,7 @@ The surface of revolution may be rotated by dragging the left mouse button and a
 number of angles and steps per curve as well as the material or texture.
 Different materials and textures have varying material properties setup to obtain correct lighting of the surface of revolution.
 
-https://youtu.be/S56pQneCJiY 
+https://youtu.be/AwIjvh92db4
 
 ![Brass Metal Example](https://raw.githubusercontent.com/vince145/Projects/master/vince145_lighting/1%20-%20brass-metal-screenshot.PNG)
 
