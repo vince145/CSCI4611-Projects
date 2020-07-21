@@ -8,7 +8,7 @@ https://en.wikipedia.org/wiki/L-system#:~:text=An%20L%2Dsystem%20consists%20of,g
 
 LSystem Examples
 
-![Example 1](https://raw.githubusercontent.com/vince145/Projects/master/vince145_LSystems/example1.PNG)
+![Example One](https://raw.githubusercontent.com/vince145/Projects/master/vince145_LSystems/example1.PNG)
 
 
-![Example 5](https://raw.githubusercontent.com/vince145/Projects/master/vince145_LSystems/example5.PNG)
+![Example Five](https://raw.githubusercontent.com/vince145/Projects/master/vince145_LSystems/example5.PNG)
